@@ -85,18 +85,22 @@
       <version>5.0.9</version>
     </dependency>
   </dependencies>
-  <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-compiler-plugin</artifactId>
-    <version>3.13.0</version>
-    <configuration>
-      <fork>true</fork>
-      <compilerArgs>
-        <arg>--add-opens</arg>
-        <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
-      </compilerArgs>
-    </configuration>
-  </plugin>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <fork>true</fork>
+          <compilerArgs>
+            <arg>--add-opens</arg>
+            <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
   <properties>
     <maven.compiler.source>16</maven.compiler.source>
