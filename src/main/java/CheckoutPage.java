@@ -198,11 +198,11 @@ public class CheckoutPage extends BasePage {
         return validationTotal;
     }
 
-    @FindBy(xpath = "(//td[@class='amount'])[1]")
+    @FindBy(xpath ="(//td[@class='amount'])[1]")
     private WebElement itemPrice;
-    @FindBy(xpath = "(//td[@class='amount'])[2]")
+    @FindBy(xpath ="(//td[@class='amount'])[2]")
     private WebElement taxPrice;
-    @FindBy(xpath = "(//td[@class='amount'])[3]")
+    @FindBy(xpath ="(//td[@class='amount'])[3]")
     private WebElement totalPrice;
 
     public double productPrice() {
@@ -285,6 +285,12 @@ public class CheckoutPage extends BasePage {
     public void clickBlueLoginButton() {
         blueLoginButton.click();
     }
+    @FindBy(xpath = "//small[@class='text-muted' and text()='Products']")
+    private WebElement loginMessage;
+
+    public WebElement getLoginMessage() {
+        return loginMessage;
+    }
 
     public void addProductToWishlist() {
         clickAwesomeGraniteChipsLink();
@@ -320,11 +326,74 @@ public class CheckoutPage extends BasePage {
         questionSign.click();
     }
 
-    @FindBy(css =".text-muted")
+    @FindBy(xpath = "//small[text()='Help']")
     private WebElement questionMessage;
 
     public WebElement getQuestionMessage() {
         return questionMessage;
+    }
+
+    @FindBy(css = ".mr-auto.form-control.form-control-sm")
+    private WebElement searchBarTwo;
+
+    public void setSearchBarTwo() {
+
+        searchBarTwo.sendKeys("Nonexistent Product");
+    }
+
+    @FindBy(css = ".btn.btn-light.btn-sm")
+    private WebElement searchButtonTwo;
+
+    public void clickSearchButtonTwo() {
+
+        searchButtonTwo.click();
+    }
+    @FindBy(css=".card-link")
+    private WebElement miscProduct;
+    public WebElement getMiscProduct(){
+        return miscProduct;
+    }
+@FindBy(xpath ="//small[@class='text-muted' and text()='Products']")
+private WebElement titleName;
+
+    public void clickTitleName() {
+
+        titleName.click();
+    }
+    @FindBy(xpath ="//small[@class='text-muted' and text()='Products']")
+    private WebElement titleWhichAppear;
+
+    public WebElement getTitleWhichAppear() {
+        return titleWhichAppear;
+    }
+    @FindBy(css=".btn.btn-link")
+    private WebElement logoutButton;
+    public void clickLogoutButton(){
+        logoutButton.click();
+    }
+    @FindBy(css =".fa-layers-counter.shopping_cart_badge")
+    private WebElement wishlistStillExist;
+
+    public WebElement getWishlistStillExist() {
+        return wishlistStillExist;
+    }
+    @FindBy(id = "password")
+    private WebElement wrongPasswordField;
+
+    public void setWrongPasswordField() {
+        wrongPasswordField.sendKeys("portocala");
+    }
+    @FindBy(css =".error")
+    private WebElement errorLogin;
+
+    public WebElement getErrorLogin() {
+        return errorLogin;
+    }
+    @FindBy(id = "user-name")
+    private WebElement wrongUserNameField;
+
+    public void setWrongUserNameField() {
+        wrongUserNameField.sendKeys("Irina");
     }
 }
 

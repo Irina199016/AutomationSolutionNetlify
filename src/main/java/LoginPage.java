@@ -111,4 +111,9 @@ public class LoginPage extends BasePage {
         return productElements;
     }
 
+    @FindBy(xpath = "//span[@style='font-weight: bold; font-size: 16px;']")
+    private List<WebElement> productPrices;
+    public List <WebElement> getProductPrices() {
+        return productPrices;
+    }
 }

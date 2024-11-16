@@ -10,9 +10,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static org.testng.Assert.assertEquals;
 
@@ -56,8 +54,8 @@ public class LoginTest extends Hooks {
         assertEquals(loginPage.getUserLoggedIn().getText(), "dino");
         ExtentTestNGITestListener.getTest().log(Status.PASS, "The user 'dino' is logged in");
     }
-@Test(description = "Sorting Test")
-    public void sortTest() {
+@Test(description = "Sorting Test  by name (Z to A)")
+    public void sortTestZA() {
 
     List<WebElement> productElements = loginPage.getProductElements();
     List<String> actualProductNames = new ArrayList<>();
@@ -67,19 +65,61 @@ public class LoginTest extends Hooks {
     }
     List<String> expectedProductNames = new ArrayList<>(actualProductNames);
     expectedProductNames.sort(Comparator.reverseOrder());
-
-
     Assert.assertEquals(actualProductNames, expectedProductNames, "The products are not sorted in reverse alphabetical order");
-       // assertEquals();
 }
-    @Test(description = "Clicking Reset when a user is logged in")
-    public void loginTested(){
-        loginPage.loginPage();
-        wait.until(ExpectedConditions.visibilityOf(loginPage.getUserLoggedIn()));
-        loginPage.clickResetButton();
+    @Test(description = "Sorting Test by name (A to z)")
+       public void sortTestAZ() {
+
+        List<WebElement> productElements = loginPage.getProductElements();
+        List<String> actualProductNames = new ArrayList<>();
+        loginPage.selectOption(loginPage.getSortBar(), "Sort by name (A to Z)");
+        for (WebElement productElement : productElements) {
+            actualProductNames.add(productElement.getText());
+        }
+        System.out.println(actualProductNames);
+        List<String> expectedProductNames = new ArrayList<>(actualProductNames);
+        expectedProductNames.sort(Comparator.naturalOrder());
+        Assert.assertEquals(actualProductNames, expectedProductNames, "The products are not sorted in alphabetical order (A to Z)");
     }
 
+@Test(description = "Sorting Test by price (Low to High)")
+public void sortTestByPriceAscending() {
+    loginPage.selectOption(loginPage.getSortBar(), "Sort by price (low to high)");
 
+    List<WebElement> productPrices = loginPage.getProductPrices();
+    List<Double> actualProductPrices = new ArrayList<>();
+
+    for (WebElement productPrice : productPrices) {
+        String priceText = productPrice.getText().replace("$", "");
+        actualProductPrices.add(Double.parseDouble(priceText));
+    }
+
+    List<Double> expectedPrices = new ArrayList<>(actualProductPrices);
+    expectedPrices.sort(Comparator.naturalOrder());
+    System.out.println(actualProductPrices);
+
+    Assert.assertEquals(actualProductPrices, expectedPrices,
+            "The products are not sorted correctly by price in ascending order");
+}
+    @Test(description = "Sorting Test by price (High to Low)")
+    public void sortTestByPriceDescending() {
+        loginPage.selectOption(loginPage.getSortBar(), "Sort by price (high to low)");
+
+        List<WebElement> productPrices = loginPage.getProductPrices();
+        List<Double> actualProductPrices = new ArrayList<>();
+
+        for (WebElement productPrice : productPrices) {
+            String priceText = productPrice.getText().replace("$", "");
+            actualProductPrices.add(Double.parseDouble(priceText));
+        }
+
+        List<Double> expectedPrices = new ArrayList<>(actualProductPrices);
+        expectedPrices.sort(Comparator.reverseOrder());
+        System.out.println(actualProductPrices);
+
+        Assert.assertEquals(actualProductPrices, expectedPrices,
+                "The products are not sorted correctly by price in descending order");
+    }
 
 }
 

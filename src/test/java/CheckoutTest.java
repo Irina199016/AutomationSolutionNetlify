@@ -51,29 +51,29 @@ public class CheckoutTest extends Hooks {
 
 
     @Test(description = "Tests the search functionality by searching for the keyword 'mouse'")
-    public void searchTest()  {
+    public void searchTest() {
         checkoutPage.setSearchBar("Awesome");
         checkoutPage.clickSearchButton();
         ExtentTestNGITestListener.getTest().log(Status.INFO, "The search engine is looking up for the keyword 'mouse'");
-    List<String> expectedProducts = new ArrayList<>();
-    expectedProducts.add("Awesome Granite Chips");
-    expectedProducts.add("Awesome Metal Chair");
-    expectedProducts.add("Awesome Soft Shirt");
+        List<String> expectedProducts = new ArrayList<>();
+        expectedProducts.add("Awesome Granite Chips");
+        expectedProducts.add("Awesome Metal Chair");
+        expectedProducts.add("Awesome Soft Shirt");
 
-    List <WebElement> productElements = loginPage.getProductElements();
-    List<String> actualProducts = new ArrayList<>();
-    for (WebElement productElement : productElements){
-        actualProducts.add(productElement.getText());
-    }
-    for (String expectedProduct : expectedProducts){
-        softAssert.assertTrue(actualProducts.contains(expectedProduct),"Expected product" + expectedProduct + " not found in the search results");
-    }
-    for (String actualProduct : actualProducts){
-        if (!actualProduct.contains("Awesome")){
-        softAssert.fail("Unexpected product found: " + actualProduct);
+        List<WebElement> productElements = loginPage.getProductElements();
+        List<String> actualProducts = new ArrayList<>();
+        for (WebElement productElement : productElements) {
+            actualProducts.add(productElement.getText());
         }
-    }
-    softAssert.assertAll();
+        for (String expectedProduct : expectedProducts) {
+            softAssert.assertTrue(actualProducts.contains(expectedProduct), "Expected product" + expectedProduct + " not found in the search results");
+        }
+        for (String actualProduct : actualProducts) {
+            if (!actualProduct.contains("Awesome")) {
+                softAssert.fail("Unexpected product found: " + actualProduct);
+            }
+        }
+        softAssert.assertAll();
     }
 
     @Test(description = "Purchasing a simple product from a guest user")
@@ -94,9 +94,9 @@ public class CheckoutTest extends Hooks {
     @Test(description = "Adding  a product to wishlist")
     public void wishlistTest() {
         checkoutPage.addProductToWishlist();
-        if(checkoutPage.getShoppingCartBadge().getText().equals("1")) {
+        if (checkoutPage.getShoppingCartBadge().getText().equals("1")) {
             ExtentTestNGITestListener.getTest().log(Status.PASS, "Shopping Cart Badge was updated with success");
-        } else{
+        } else {
             softAssert.fail("Shopping Cart Badge was not updated correctly");
         }
         checkoutPage.clickShoppingCartBadge();
@@ -104,7 +104,8 @@ public class CheckoutTest extends Hooks {
         ExtentTestNGITestListener.getTest().log(Status.PASS, "Awesome Granite Chips product was found in the Wishlist");
         softAssert.assertAll();
     }
-    @Test(description = "Removing  a product to wishlist")
+
+    @Test(description = "Removing  a product from wishlist")
     public void removeItemFromWishlist() {
         checkoutPage.addProductToWishlist();
         checkoutPage.clickShoppingCartBadge();
@@ -114,7 +115,7 @@ public class CheckoutTest extends Hooks {
             if (checkoutPage.getAwesomeChipsProduct().isDisplayed()) {
                 Assert.fail("Element is still present.");
             }
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             ExtentTestNGITestListener.getTest().log(Status.PASS, "Awesome Granite Chips product was present");
             Assert.assertTrue(true, "Element is not present as expected.");
         }
@@ -124,28 +125,29 @@ public class CheckoutTest extends Hooks {
     @Test(description = "Increase the amount of a product")
     public void increasedAmountTest() throws InterruptedException {
         Thread.sleep(5000);
-
-        ExtentTestNGITestListener.getTest().log(Status.INFO, "The price of the product is:+" + checkoutPage.productPrice());
+        checkoutPage.addProductToCart();
+        ExtentTestNGITestListener.getTest().log(Status.INFO, "The price of the product is" + checkoutPage.productPrice());
         double expectedTotal = checkoutPage.productPrice() * 2;
-        ExtentTestNGITestListener.getTest().log(Status.INFO, "The price of the product is:+" + expectedTotal);
+        ExtentTestNGITestListener.getTest().log(Status.INFO, "The price of the product is" + expectedTotal);
         checkoutPage.clickPlusOne();
         assertEquals(checkoutPage.productPrice(), expectedTotal);
         ExtentTestNGITestListener.getTest().log(Status.PASS, "The price of the product matches the expected total" + checkoutPage.productPrice() + "=" + expectedTotal);
     }
+
     @Test(description = "Calculate the total price for a product")
-    public void totalPriceForAProduct(){
+    public void totalPriceForAProduct() {
         checkoutPage.addProductToCart();
-        ExtentTestNGITestListener.getTest().log(Status.INFO, "The price of product is"+checkoutPage.productPrice());
-        ExtentTestNGITestListener.getTest().log(Status.INFO, "The tax price  is"+checkoutPage.taxPrice());
-        double expectedTotal = checkoutPage.totalPrice()+checkoutPage.taxPrice();
-        ExtentTestNGITestListener.getTest().log(Status.INFO, "The actual price  is"+checkoutPage.totalPrice());
-        ExtentTestNGITestListener.getTest().log(Status.INFO, "The expected price  is"+expectedTotal);
-        assertEquals(checkoutPage.totalPrice(),expectedTotal);
+        ExtentTestNGITestListener.getTest().log(Status.INFO, "The price of product is" + checkoutPage.productPrice());
+        ExtentTestNGITestListener.getTest().log(Status.INFO, "The tax price  is" + checkoutPage.taxPrice());
+        double expectedTotal = checkoutPage.totalPrice() + checkoutPage.taxPrice();
+        ExtentTestNGITestListener.getTest().log(Status.INFO, "The actual price  is" + checkoutPage.totalPrice());
+        ExtentTestNGITestListener.getTest().log(Status.INFO, "The expected price  is" + expectedTotal);
+        assertEquals(checkoutPage.totalPrice(), expectedTotal);
 
     }
 
     @Test(description = "Tests the deleting button")
-    public void deleteProduct()  {
+    public void deleteProduct() {
         checkoutPage.clickAwesomeMetalChair();
         checkoutPage.clickChartIconForMetalChair();
         checkoutPage.clickCounterShoppingCartBadge();
@@ -159,18 +161,77 @@ public class CheckoutTest extends Hooks {
         checkoutPage.setUserNameField();
         checkoutPage.setPasswordField();
         checkoutPage.clickBlueLoginButton();
+        assertEquals(checkoutPage.getLoginMessage().getText(), "Products");
     }
+
     @Test(description = "Click on wishlist icon")
-    public void wishlistbutton(){
+    public void wishlistbutton() {
         checkoutPage.clickOnWishlistIcon();
-        assertEquals(checkoutPage.getWishlistMessage().getText(),"Wishlist");
+        assertEquals(checkoutPage.getWishlistMessage().getText(), "Wishlist");
     }
+
     @Test(description = "Click on help button")
     public void helpButton() {
         checkoutPage.clickOnQuestionSign();
-        assertEquals(checkoutPage.getQuestionMessage(). getText(),"Help");
+        assertEquals(checkoutPage.getQuestionMessage().getText(), "Help");
     }
 
+    @Test(description = "Test searching for an invalid product")
+    public void searchInvalidProductTest() {
+        checkoutPage.setSearchBarTwo();
+        checkoutPage.clickSearchButton();
+        try {
+
+            if (checkoutPage.getMiscProduct().isDisplayed()) {
+                Assert.fail("Element is still present.");
+            }
+        } catch (NoSuchElementException e) {
+            ExtentTestNGITestListener.getTest().log(Status.PASS, "The 'Nonexistent Product' element is not found");
+            Assert.assertTrue(true, "Element is not present as expected.");
+        }
+
+    }
+
+    @Test(description = "Verify Home Page Title")
+    public void verifyHomePageTitle() {
+        checkoutPage.clickTitleName();
+        assertEquals(checkoutPage.getTitleWhichAppear().getText(), "Products");
+    }
+
+    @Test(description = "Verify Wishlist Persistence After Logout")
+    public void verifyWishlistPersistenceAfterLogout() {
+        loginPage.loginPage();
+        checkoutPage.addProductToWishlist();
+        checkoutPage.clickLogoutButton();
+        assertEquals(checkoutPage.getWishlistStillExist().getText(), "1");
+    }
+
+    @Test(description = "Login with wrong password")
+    public void wrongPassword()  {
+        checkoutPage.clickLoginButton();
+        checkoutPage.setUserNameField();
+        checkoutPage.setWrongPasswordField();
+        checkoutPage.clickBlueLoginButton();
+        assertEquals(checkoutPage.getErrorLogin().getText(), "Incorrect username or password!");
+
+    }
+
+    @Test(description = "Login with wrong username")
+    public void wrongUserName()  {
+        checkoutPage.clickLoginButton();
+        checkoutPage.setWrongUserNameField();
+        checkoutPage.setPasswordField();
+        checkoutPage.clickBlueLoginButton();
+        assertEquals(checkoutPage.getErrorLogin().getText(), "Incorrect username or password!");
+
+    }
+
+    @Test(description = "Login with wrong username and wrong password")
+    public void wrongUserNameAndWrongPassword()  {
+        checkoutPage.clickLoginButton();
+        checkoutPage.setWrongUserNameField();
+        checkoutPage.setWrongPasswordField();
+        checkoutPage.clickBlueLoginButton();
+        assertEquals(checkoutPage.getErrorLogin().getText(), "Incorrect username or password!");
+    }
 }
-
-
