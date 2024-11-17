@@ -207,7 +207,7 @@ public class CheckoutTest extends Hooks {
     }
 
     @Test(description = "Login with wrong password")
-    public void wrongPassword()  {
+    public void wrongPassword() {
         checkoutPage.clickLoginButton();
         checkoutPage.setUserNameField();
         checkoutPage.setWrongPasswordField();
@@ -217,7 +217,7 @@ public class CheckoutTest extends Hooks {
     }
 
     @Test(description = "Login with wrong username")
-    public void wrongUserName()  {
+    public void wrongUserName() {
         checkoutPage.clickLoginButton();
         checkoutPage.setWrongUserNameField();
         checkoutPage.setPasswordField();
@@ -227,11 +227,34 @@ public class CheckoutTest extends Hooks {
     }
 
     @Test(description = "Login with wrong username and wrong password")
-    public void wrongUserNameAndWrongPassword()  {
+    public void wrongUserNameAndWrongPassword() {
         checkoutPage.clickLoginButton();
         checkoutPage.setWrongUserNameField();
         checkoutPage.setWrongPasswordField();
         checkoutPage.clickBlueLoginButton();
         assertEquals(checkoutPage.getErrorLogin().getText(), "Incorrect username or password!");
+    }
+
+    @Test(description = "Ensure the user receives error messages when leaving required fields blank in a form")
+    public void emptyFieldsErrorTest() {
+        checkoutPage.clickAwesomeGraniteChipsLink();
+        checkoutPage.clickCartIcon();
+        checkoutPage.clickShoppingCartIcon();
+        checkoutPage.clickCheckooutButton();
+        checkoutPage.setLastNameField();
+        checkoutPage.setAddressField();
+        checkoutPage.clickContinueCheckout();
+        checkoutPage.clickCompleteYourOrder();
+        assertEquals(checkoutPage.getErrorMessage().getText(), "First Name is required");
+
+    }
+
+    @Test(description = "Verify the reset button clears the cart")
+    public void testResetButton() {
+        checkoutPage.clickAwesomeGraniteChipsLink();
+        checkoutPage.clickCartIcon();
+        checkoutPage.clickShoppingCartIcon();
+        checkoutPage.clickResetIcon();
+        assertEquals(checkoutPage.getResetMessage().getText(), "How about adding some products in your cart?");
     }
 }

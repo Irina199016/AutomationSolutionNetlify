@@ -395,6 +395,24 @@ private WebElement titleName;
     public void setWrongUserNameField() {
         wrongUserNameField.sendKeys("Irina");
     }
+    @FindBy(css = ".error")
+    private WebElement errorMessage;
+
+    public WebElement getErrorMessage() {
+        return errorMessage;
+    }
+    @FindBy(css = ".svg-inline--fa.fa-undo.fa-w-16")
+    private WebElement resetIcon;
+
+    public void clickResetIcon() {
+        resetIcon.click();
+    }
+    @FindBy(css = ".text-center.container")
+    private WebElement resetMessage;
+
+    public WebElement getResetMessage() {
+        return resetMessage;
+    }
 }
 
 
