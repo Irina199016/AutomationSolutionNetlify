@@ -31,26 +31,15 @@ public class LoginPage extends BasePage {
         softAssert = new SoftAssert();
     }
 
-    // Locating the search bar element using the @FindBy annotation.
-    // @FindBy is a Selenium annotation that helps locate elements on the web page.
-    // Here, the element is being located by its 'id' attribute with the value "input-search".
-    // Declare the WebElement as private to enforce encapsulation
-    // This ensures that 'searchBar' cannot be accessed directly from outside this class
+
     @FindBy(id = "input-search")
     private WebElement searchBar;
 
-    // A public method to set a value in the search bar.
-    // This method interacts with the searchBar element and sends the text "mouse" to it.
-    // Public method to interact with the private 'searchBar' element
-    // Provides controlled access to the encapsulated WebElement
     public void setSearchBar() {
         // Typing the word "mouse" into the search bar.
         searchBar.sendKeys("mouse");
     }
 
-    // Locating the search button element using the @FindBy annotation.
-    // The element is being located by its CSS selector, which identifies elements based on their classes.
-    // Here, the button has the classes "btn", "btn-light", and "btn-sm".
     @FindBy(css = ".svg-inline--fa.fa-sign-in-alt.fa-w-16 ")
     private WebElement loginButton;
 
